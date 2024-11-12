@@ -1,0 +1,1717 @@
+{
+	"info": {
+		"_postman_id": "7dd647c6-b4df-42b8-8518-b49a12e6430d",
+		"name": "Team7_Postman Galaxy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37274119",
+		"_collection_link": "https://lunar-eclipse-368965.postman.co/workspace/b02644e0-0b66-4056-83eb-197e346ea24d/collection/37274119-7dd647c6-b4df-42b8-8518-b49a12e6430d?action=share&source=collection_link&creator=37274119"
+	},
+	"item": [
+		{
+			"name": "User_login",
+			"item": [
+				{
+					"name": "Create a new User with all Valid Credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );\r",
+									"\r",
+									"\r",
+									"//capture userId\r",
+									"var jsonData = pm.response.json();\r",
+									"var userId1 = jsonData.userId;\r",
+									"pm.environment.set(\"userId\", userId1);\r",
+									"pm.globals.set(\"userId\", userId1);\r",
+									"console.log(\"Captured userId:\", userId1);\r",
+									"\r",
+									"\r",
+									"// Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// To validate status code\r",
+									"pm.test(\"Validating Status Code\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\") || 200);\r",
+									"});\r",
+									"\r",
+									"// Get the status code of the response\r",
+									"var statusCode = pm.response.code;\r",
+									"if (statusCode === 200) {\r",
+									"    console.log('Status code is 200. Running assertions...');\r",
+									"\r",
+									"    // Schema validating\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var schema = {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"token\": { \"type\": \"string\" },\r",
+									"            \"type\": { \"type\": \"string\" },\r",
+									"            \"userId\": { \"type\": \"string\" },\r",
+									"            \"email\": { \"type\": \"string\" },\r",
+									"            \"roles\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"string\" }\r",
+									"            },\r",
+									"            \"status\": { \"type\": \"string\" },\r",
+									"            \"passwordExpired\": { \"type\": \"boolean\" }\r",
+									"        },\r",
+									"        \"required\": [\"token\", \"type\", \"userId\", \"email\", \"roles\", \"status\", \"passwordExpired\"]\r",
+									"    };\r",
+									"\r",
+									"    // Validate the schema\r",
+									"    pm.test('Schema is valid', function() {\r",
+									"        pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"    });\r",
+									"\r",
+									"    // Validate status text\r",
+									"    pm.test(\"Status code name has OK\", () => {\r",
+									"        pm.response.to.have.status(\"OK\");\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(`Status code is ${statusCode}. Assertions skipped.`);\r",
+									"}\r",
+									"\r",
+									"//Testing headers\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \"sdet@gmail.com\",\r\n\"password\":\"LmsHackathon@2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid Url",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \"sdet@gmail.com\",\r\n\"password\":\"LmsHackathon@2024\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://lms-hackthon-oct24-3efc7e0df381.herokuapp.com//{{post_endpoint}}",
+							"protocol": "https",
+							"host": [
+								"lms-hackthon-oct24-3efc7e0df381",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid Endpoint",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \"sdet@gmail.com\",\r\n\"password\":\"LmsHackathon@2024\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}lon",
+							"host": [
+								"{{BaseURL}}lon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid Email-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is  Unauthorized\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Unauthorized\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 401\", () => {\r",
+									" pm.response.to.have.status(401);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );\r",
+									"\r",
+									"//validate the response msg\r",
+									"pm.test(\"Response msg includes 'Bad credentials'\", function (){\r",
+									"pm.expect(pm.response.text()).to.include(\"Bad credentials\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success is false\", function() {\r",
+									"    pm.expect(JsonData.success).to.eql(false);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \"sd@gmail.com\",\r\n\"password\":\"LmsHackathon@2024\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is  Unauthorized\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Unauthorized\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 401\", () => {\r",
+									" pm.response.to.have.status(401);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \"sdet@gmail.com\",\r\n\"password\":\"Hackathon@2024\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with missing body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is Bad Request\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Bad Request\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 400\", () => {\r",
+									" pm.response.to.have.status(400);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with improper method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is Method Not Allowed\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Method Not Allowed\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 405\", () => {\r",
+									" pm.response.to.have.status(405);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \"sdet@gmail.com\",\r\n\"password\":\"LmsHackathon@2024\"}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new user with missing Email-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is Bad Request\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Bad Request\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 400\", () => {\r",
+									" pm.response.to.have.status(400);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \" \",\r\n\"password\":\"LmsHackathon@2024\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new request with missing password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userLoginEmailId\": \"sdet@gmail.com\",\r\n\"password\":\"\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}{{post_endpoint}}",
+							"host": [
+								"{{base_url}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Logout",
+			"item": [
+				{
+					"name": "User Logout with valid credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//validate status text\r",
+									"pm.test(\"Status code name has OK\", () => {\r",
+									" pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									" pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"//validate the response msg\r",
+									"pm.test(\"Response msg includes 'Logout successful'\", function (){\r",
+									"pm.expect(pm.response.text()).to.include(\"Logout successful\")\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}{{Get_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{Get_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with invalid url",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://lms-hackthon-oct24-3efc7e0df381.herokuapp.com//{{Get_endpoint}}",
+							"protocol": "https",
+							"host": [
+								"lms-hackthon-oct24-3efc7e0df381",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"{{Get_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with invalid endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//validate the response msg\r",
+									"pm.test(\"Response msg includes 'Invalid endpoint'\", function (){\r",
+									"pm.expect(pm.response.text()).to.include(\"Invalid endpoint\")\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}}}lms",
+							"host": [
+								"{{BaseURL}}}}lms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with invalid BerarToken",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "\"{{AdminBearer_TokenLMS}}\"",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{Get_endpoint}}",
+							"host": [
+								"{{base_url}}{{Get_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with no BearerToken",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}{{Get_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{Get_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with improper method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{Get_endpoint}}",
+							"host": [
+								"{{base_url}}{{Get_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DDlogin",
+			"item": [
+				{
+					"name": "Create a new User with all Valid Credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );\r",
+									"\r",
+									"\r",
+									"//capture userId\r",
+									"var jsonData = pm.response.json();\r",
+									"var userId1 = jsonData.userId;\r",
+									"pm.environment.set(\"userId\", userId1);\r",
+									"pm.globals.set(\"userId\", userId1);\r",
+									"console.log(\"Captured userId:\", userId1);\r",
+									"\r",
+									"\r",
+									"// Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// To validate status code\r",
+									"pm.test(\"Validating Status Code\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\") || 200);\r",
+									"});\r",
+									"\r",
+									"// Get the status code of the response\r",
+									"var statusCode = pm.response.code;\r",
+									"if (statusCode === 200) {\r",
+									"    console.log('Status code is 200. Running assertions...');\r",
+									"\r",
+									"    // Schema validating\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var schema = {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"token\": { \"type\": \"string\" },\r",
+									"            \"type\": { \"type\": \"string\" },\r",
+									"            \"userId\": { \"type\": \"string\" },\r",
+									"            \"email\": { \"type\": \"string\" },\r",
+									"            \"roles\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"string\" }\r",
+									"            },\r",
+									"            \"status\": { \"type\": \"string\" },\r",
+									"            \"passwordExpired\": { \"type\": \"boolean\" }\r",
+									"        },\r",
+									"        \"required\": [\"token\", \"type\", \"userId\", \"email\", \"roles\", \"status\", \"passwordExpired\"]\r",
+									"    };\r",
+									"\r",
+									"    // Validate the schema\r",
+									"    pm.test('Schema is valid', function() {\r",
+									"        pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"    });\r",
+									"\r",
+									"    // Validate status text\r",
+									"    pm.test(\"Status code name has OK\", () => {\r",
+									"        pm.response.to.have.status(\"OK\");\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(`Status code is ${statusCode}. Assertions skipped.`);\r",
+									"}\r",
+									"\r",
+									"//Testing headers\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\":\"{{password1}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{endpoint}}",
+							"host": [
+								"{{BaseURL}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid Url",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate status text\r",
+									"pm.test(\"Status text is Not Found\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Not Found\");\r",
+									"});\r",
+									"//status code\r",
+									"pm.test(\"Status code is 404 \", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\": \"{{password1}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://lms-hackthon-oct24-3efc7e0df381.herokuapp.com/{{post_endpoint}}",
+							"protocol": "https",
+							"host": [
+								"lms-hackthon-oct24-3efc7e0df381",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid Endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\": \"{{password1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}lon",
+							"host": [
+								"{{BaseURL}}lon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid Email-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is  Unauthorized\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Unauthorized\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 401\", () => {\r",
+									" pm.response.to.have.status(401);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\":\"{{password1}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with all Invalid password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is  Unauthorized\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Unauthorized\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 401\", () => {\r",
+									" pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\":\"{{password1}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with missing body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is Bad Request\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Bad Request\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 400\", () => {\r",
+									" pm.response.to.have.status(400);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new User with improper method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is Method Not Allowed\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Method Not Allowed\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 405\", () => {\r",
+									" pm.response.to.have.status(405);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\":\"{{password1}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new user with missing Email-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is Bad Request\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Bad Request\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 400\", () => {\r",
+									" pm.response.to.have.status(400);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\":\"{{password1}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new request with missing password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Testing headers\r",
+									"//Check that a response header is present:\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"//Test for a response header having a particular value:\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"// Validate status text\r",
+									"pm.test(\"Status text is Bad Request\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(\"Bad Request\"); \r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 400\", () => {\r",
+									" pm.response.to.have.status(400);\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS = JsonData.token;\r",
+									"pm.environment.set(\"AdminBearer_TokenLMS\", AdminBearer_TokenLMS );"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\":\"{{password1}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{post_endpoint}}",
+							"host": [
+								"{{BaseURL}}{{post_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Logout with valid credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"// To validate status code\r",
+									"pm.test(\"Validating Status Code\", () => {\r",
+									"   // pm.expect(pm.response.code).to.eql(pm.variables.get(\"status\") || 200);\r",
+									"   pm.expect(pm.response.code).to.eql(pm.variables.get(\"status\"));\r",
+									"});\r",
+									"\r",
+									"// Get the status code of the response\r",
+									"var statusCode = pm.response.code;\r",
+									"if (statusCode === 200) {\r",
+									"    console.log('Status code is 200. Running assertions...');\r",
+									"\r",
+									"    // Validate status text\r",
+									"    pm.test(\"Status code name has OK\", () => {\r",
+									"        pm.response.to.have.status(\"OK\");\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(`Status code is ${statusCode}. Assertions skipped.`);\r",
+									"}\r",
+									"//validate the response msg\r",
+									"pm.test(\"Response msg includes 'Logout successful'\", function (){\r",
+									"pm.expect(pm.response.text()).to.include(\"Logout successful\")\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}{{endpoint}}",
+							"host": [
+								"{{BaseURL}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with invalid url",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://lms-hackthon-oct24-3efc7e0df381.herokuapp.com//{{endpoint}}",
+							"protocol": "https",
+							"host": [
+								"lms-hackthon-oct24-3efc7e0df381",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with invalid endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//validate the response msg\r",
+									"pm.test(\"Response msg includes 'Invalid endpoint'\", function (){\r",
+									"pm.expect(pm.response.text()).to.include(\"Invalid endpoint\")\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}lms",
+							"host": [
+								"{{BaseURL}}lms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with invalid BerarToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "\"{{AdminBearer_TokenLMS}}\"",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}{{endpoint}}",
+							"host": [
+								"{{BaseURL}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with no BearerToken",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}{{endpoint}}",
+							"host": [
+								"{{BaseURL}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Log out with improper method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//validate the response msg\r",
+									"pm.test(\"Response msg includes 'Request method 'POST' is not supported'\", function (){\r",
+									"    pm.expect(pm.response.text()).to.include(\"Request method 'POST' is not supported\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}{{endpoint}}",
+							"host": [
+								"{{BaseURL}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DD-userlogin/logout",
+			"item": [
+				{
+					"name": "DDH User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var JsonData = pm.response.json();\r",
+									"var AdminBearer_TokenLMS1 = JsonData.token;\r",
+									"// Store the token in a collection variable\r",
+									"pm.collectionVariables.set(\"AdminBearer_TokenLMS1\", AdminBearer_TokenLMS1);\r",
+									"\r",
+									"\r",
+									"// Check that the Content-Type response header is application/json\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for a response header having a particular value\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"var JsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Validating Status Code\", ()=> {\r",
+									"    pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
+									"});\r",
+									"// Get the status code of the response\r",
+									"var statusCode = pm.response.code;\r",
+									"\r",
+									"// Check if the status code is 201\r",
+									"if (statusCode === 201) {\r",
+									"    console.log('Status code is 201. Running assertions...');\r",
+									"\r",
+									"//pm.test(\"Status code is 200\", function () {\r",
+									"    //pm.response.to.have.status(200);\r",
+									"   // });\r",
+									"\r",
+									"    //validate status text\r",
+									"pm.test(\"Status code name has OK\", () => {\r",
+									" pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Schema validating\r",
+									"var jsonData = pm.response.json();\r",
+									"var schema ={\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"token\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"type\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"userId\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"email\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"roles\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": {\r",
+									"        \"type\": \"string\"\r",
+									"      }\r",
+									"    },\r",
+									"    \"status\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"passwordExpired\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"token\",\r",
+									"    \"type\",\r",
+									"    \"userId\",\r",
+									"    \"email\",\r",
+									"    \"roles\",\r",
+									"    \"status\",\r",
+									"    \"passwordExpired\"\r",
+									"  ]\r",
+									"};\r",
+									"// Validate the schema\r",
+									"pm.test('Schema is valid', function() {\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//capture userId\r",
+									"var jsonData = pm.response.json();\r",
+									"var userId1 = jsonData.userId;\r",
+									"pm.environment.set(\"userId\", userId1);\r",
+									"pm.globals.set(\"userId\", userId1);\r",
+									"console.log(\"Captured userId:\", userId1);\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLogin_EmailId1}}\",\r\n  \"password\":\"{{password1}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}{{endpoint}}",
+							"host": [
+								"{{BaseURL}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DDH User Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//validate status text\r",
+									"pm.test(\"Status code name has OK\", () => {\r",
+									" pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Test for response status code\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									" pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"//validate the response msg\r",
+									"pm.test(\"Response msg includes 'Logout successful'\", function (){\r",
+									"pm.expect(pm.response.text()).to.include(\"Logout successful\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not empty\", function () {\r",
+									"    pm.response.to.have.body();\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AdminBearer_TokenLMS1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}{{endpoint}}",
+							"host": [
+								"{{BaseURL}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// Load data from json file to collection variable 'RequestBatchData'\r",
+					"if(typeof pm.variables.get('RequestBatchData') !== 'object')\r",
+					"{\r",
+					"    pm.variables.set('RequestBatchData', pm.iterationData.toObject());\r",
+					"}\r",
+					"\r",
+					"// Read input data from collection variable 'RequestBatchData'\r",
+					"const RequestBatchData = pm.variables.get('RequestBatchData');\r",
+					"\r",
+					"// If 'RequestBatchData'/input data is empty\r",
+					"if(typeof RequestBatchData != 'object' || Object.keys(RequestBatchData).length === 0)\r",
+					"{\r",
+					"    console.log('No external data provided/data set is empty');\r",
+					"    return;\r",
+					"}\r",
+					"\r",
+					"// Find current request's data\r",
+					"const currentRequest = RequestBatchData.requests.filter(({name}) => name === pm.info.requestName)[0];\r",
+					"\r",
+					"// If no data found for current request\r",
+					"if(!currentRequest){\r",
+					"    console.log('Request ${pm.info.requestName} has no data.');\r",
+					"}\r",
+					"\r",
+					"// If data found for current request\r",
+					"if(currentRequest){\r",
+					"    // Expose variables\r",
+					"    const variables = currentRequest.data.shift();\r",
+					"\r",
+					"    Object.entries(variables).forEach(([key, value]) => {\r",
+					"        pm.variables.set(key, value);\r",
+					"    });\r",
+					"    pm.variables.set('RequestBatchData', RequestBatchData);\r",
+					"\r",
+					"      // Declare next request\r",
+					"    if(currentRequest.data.length > 0){\r",
+					"        postman.setNextRequest(pm.info.requestName);\r",
+					"    }\r",
+					"}\t"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "AdminBearer_TokenLMS1",
+			"value": ""
+		}
+	]
+}
